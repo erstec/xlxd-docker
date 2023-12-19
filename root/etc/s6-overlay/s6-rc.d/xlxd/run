@@ -11,6 +11,8 @@ if [ -z ${XLXNUM:-} ]; then
 
 fi
 
+echo "Starting XLX Reflector ${XLXNUM} on ${IP}..."
+
 # check for modified config files
 cp -pv /config/*.* ${XLXD_DIR}
 
