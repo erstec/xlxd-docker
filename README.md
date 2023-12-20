@@ -1,3 +1,8 @@
+docker build -t xlxd:1 .
+
+docker run --name=xlxd -v /opt/xlxd:/config -e "CALLSIGN=LY3PH" -e "EMAIL=ly3ph@qsl.lt" -e "URL=xlx.qsl.lt" -e "XLXNUM=XLX642" -e "CALLHOME=false" -e "AMBED=ip_of_ambed" xlxd:1
+// for prod: CALLHOME=true, -d
+
 # XLXd Docker Image
 
 This Ubuntu Linux based Docker image allows you to run [LX3JL's](https://github.com/LX3JL) [XLXd](https://github.com/LX3JL/xlxd/) without having to configure any files or compile any code.

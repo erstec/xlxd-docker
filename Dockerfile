@@ -4,10 +4,10 @@ FROM amd64/ubuntu:latest AS base
 ENTRYPOINT ["/init"]
 
 ENV TERM="xterm" LANG="C.UTF-8" LC_ALL="C.UTF-8"
-ENV CALLSIGN EMAIL URL XLXNUM TZ="UTC"
-ENV CALLHOME=false COUNTRY="United States" DESCRIPTION="XLX Reflector" PORT=80
-ENV MODULES=4 MODULEA="Main" MODULEB="TBD" MODULEC="TBD" MODULED="TBD"
-ENV XLXCONFIG=/var/www/xlxd/pgs/config.inc.php
+ENV CALLSIGN EMAIL URL XLXNUM AMBED TZ="Europe/Vilnius"
+ENV CALLHOME=false COUNTRY="Lithuania" DESCRIPTION="Lithuania XLX DMR-YSF-DStar Reflector" PORT=80
+ENV MODULES=1 MODULEA="Global" MODULEB="TBD" MODULEC="TBD" MODULED="TBD"
+ENV XLXCONFIG=/var/www/xlxd/pgs/config.inc.php XLXCONFIG2=/var/www/newxlxd/pgs/config.inc.php
 ENV XLXD_DIR=/xlxd XLXD_INST_DIR=/src/xlxd XLXD_WEB_DIR=/var/www/xlxd
 ARG YSF_AUTOLINK_ENABLE=1 YSF_AUTOLINK_MODULE="A" YSF_DEFAULT_NODE_RX_FREQ=438000000 YSF_DEFAULT_NODE_TX_FREQ=438000000
 ARG ARCH=x86_64 S6_OVERLAY_VERSION=3.1.5.0 S6_RCD_DIR=/etc/s6-overlay/s6-rc.d S6_LOGGING=1 S6_KEEP_ENV=1
@@ -39,14 +39,14 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLA
 RUN tar -C / -Jxpf /tmp/s6-overlay-${ARCH}.tar.xz
 
 # Clone xlxd repository
-ADD --keep-git-dir=true https://github.com/LX3JL/xlxd.git#master ${XLXD_INST_DIR}
+ADD --keep-git-dir=true https://github.com/erstec/xlxd.git#xlx642-custom-2 ${XLXD_INST_DIR}
 
 # Copy in source code (use local sources if repositories go down)
 #COPY src/ /
 
 # uncomment next 2 lines for chandler tag
-#ARG REFLECTOR_NAME="'C','h','a','n','d','l','e','r','\ ','H','a','m','s','\ '"
-#RUN sed -i "s/'X','L','X','\ ','r','e','f','l','e','c','t','o','r','\ '/${REFLECTOR_NAME}/g" ${XLXD_INST_DIR}/src/cysfprotocol.cpp
+ARG REFLECTOR_NAME="'L','i','t','h','u','a','n','i','a','\ ','X','L','X','\ '"
+RUN sed -i "s/'X','L','X','\ ','r','e','f','l','e','c','t','o','r','\ '/${REFLECTOR_NAME}/g" ${XLXD_INST_DIR}/src/cysfprotocol.cpp
 
 # Perform pre-compiliation configurations
 RUN sed -i "s/\#define\ RUN_AS_DAEMON/\/\/\#define\ RUN_AS_DAEMON/g" ${XLXD_INST_DIR}/src/main.h && \
@@ -68,14 +68,19 @@ RUN cd ${XLXD_INST_DIR}/src && \
 RUN cp -ivR ${XLXD_INST_DIR}/dashboard/* ${XLXD_WEB_DIR}/ && \
     chown -R www-data:www-data ${XLXD_WEB_DIR}/
 
-# Copy in custom images and stylesheet
-COPY --chown=www-data:www-data custom/up.png ${XLXD_WEB_DIR}/img/up.png
-COPY --chown=www-data:www-data custom/down.png ${XLXD_WEB_DIR}/img/down.png
-COPY --chown=www-data:www-data custom/ear.png ${XLXD_WEB_DIR}/img/ear.png
-COPY --chown=www-data:www-data custom/header.jpg ${XLXD_WEB_DIR}/img/header.jpg
-COPY --chown=www-data:www-data custom/logo.jpg ${XLXD_WEB_DIR}/img/dvc.jpg
-COPY --chown=www-data:www-data custom/layout.css ${XLXD_WEB_DIR}/css/layout.css
-COPY --chown=www-data:www-data custom/favicon.ico ${XLXD_WEB_DIR}/favicon.ico
+# Install dark web dashboard
+RUN mkdir -p ${XLXD_WEB_DIR}/../newxlxd && \
+    cp -ivR ${XLXD_INST_DIR}/dashboard2/* ${XLXD_WEB_DIR}/../newxlxd && \
+    chown -R www-data:www-data ${XLXD_WEB_DIR}/
+
+# # Copy in custom images and stylesheet
+# COPY --chown=www-data:www-data custom/up.png ${XLXD_WEB_DIR}/img/up.png
+# COPY --chown=www-data:www-data custom/down.png ${XLXD_WEB_DIR}/img/down.png
+# COPY --chown=www-data:www-data custom/ear.png ${XLXD_WEB_DIR}/img/ear.png
+# COPY --chown=www-data:www-data custom/header.jpg ${XLXD_WEB_DIR}/img/header.jpg
+# COPY --chown=www-data:www-data custom/logo.jpg ${XLXD_WEB_DIR}/img/dvc.jpg
+# COPY --chown=www-data:www-data custom/layout.css ${XLXD_WEB_DIR}/css/layout.css
+# COPY --chown=www-data:www-data custom/favicon.ico ${XLXD_WEB_DIR}/favicon.ico
 
 # Copy in s6 service definitions and scripts
 COPY root/ /

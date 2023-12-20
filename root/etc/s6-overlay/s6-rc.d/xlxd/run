@@ -2,8 +2,10 @@
 
 PIDFILE="/var/log/xlxd.pid"
 XMLFILE="/var/log/xlxd.xml"
-IP=$( hostname -I )
-AMBED=ambed
+#IP=$( hostname -I )
+IP=$( hostname -I | awk '{print $1}' )
+#IP=$( ip a | grep inet | grep "eth0\|en" | awk '{print $2}' | tr '/' ' ' | awk '{print $1}' )
+# AMBED=ambed
 
 if [ -z ${XLXNUM:-} ]; then
   echo "XLXNUM is not set"
