@@ -1,7 +1,14 @@
 docker build -t xlxd:1 .
 
-docker run --name=xlxd -v /opt/xlxd:/config -e "CALLSIGN=LY3PH" -e "EMAIL=ly3ph@qsl.lt" -e "URL=xlx.qsl.lt" -e "XLXNUM=XLX642" -e "CALLHOME=false" -e "AMBED=ip_of_ambed" xlxd:1
+docker run --name=xlxd -v /opt/xlxd:/config --restart unless-stopped --net=host -e "CALLSIGN=LY3PH" -e "EMAIL=ly3ph@qsl.lt" -e "URL=xlx.qsl.lt" -e "XLXNUM=XLX642" -e "CALLHOME=false" -e "AMBED=ip_of_ambed" -e "TZ=EET" xlxd:1
 // for prod: CALLHOME=true, -d
+
+docker start xlxd
+
+docker logs -f xlxd
+
+docker exec -it xlxd bash
+
 
 # XLXd Docker Image
 
