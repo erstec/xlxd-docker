@@ -24,7 +24,7 @@ services:
       MODULEB: 'TBD'
       MODULEC: 'TBD'
       MODULED: 'TBD'
-      TZ: 'Europe/Vilnius'
+      TZ: 'EET'
     volumes:
       # local directory where state and config files (including callinghome.php) will be saved
       - /opt/xlxd:/config

@@ -4,7 +4,7 @@ FROM amd64/ubuntu:latest AS base
 ENTRYPOINT ["/init"]
 
 ENV TERM="xterm" LANG="C.UTF-8" LC_ALL="C.UTF-8"
-ENV CALLSIGN EMAIL URL XLXNUM AMBED TZ="Europe/Vilnius"
+ENV CALLSIGN EMAIL URL XLXNUM AMBED TZ="EET"
 ENV CALLHOME=false COUNTRY="Lithuania" DESCRIPTION=" - Lithuania XLX DMR-YSF-DStar Reflector" PORT=8050
 ENV MODULES=1 MODULEA="Global" MODULEB="TBD" MODULEC="TBD" MODULED="TBD"
 ENV XLXCONFIG=/var/www/xlxd/pgs/config.inc.php XLXCONFIG2=/var/www/newxlxd/pgs/config.inc.php
