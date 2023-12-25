@@ -10,7 +10,7 @@ ENV MODULES=1 MODULEA="Global" MODULEB="TBD" MODULEC="TBD" MODULED="TBD"
 ENV XLXCONFIG=/var/www/xlxd/pgs/config.inc.php XLXCONFIG2=/var/www/newxlxd/pgs/config.inc.php
 ENV XLXD_DIR=/xlxd XLXD_INST_DIR=/src/xlxd XLXD_WEB_DIR=/var/www/xlxd
 ARG YSF_AUTOLINK_ENABLE=1 YSF_AUTOLINK_MODULE="A" YSF_DEFAULT_NODE_RX_FREQ=438000000 YSF_DEFAULT_NODE_TX_FREQ=438000000
-ARG ARCH=x86_64 S6_OVERLAY_VERSION=3.1.5.0 S6_RCD_DIR=/etc/s6-overlay/s6-rc.d S6_LOGGING=1 S6_KEEP_ENV=1
+ARG ARCH=x86_64 S6_OVERLAY_VERSION=3.1.6.2 S6_RCD_DIR=/etc/s6-overlay/s6-rc.d S6_LOGGING=1 S6_KEEP_ENV=1
 
 # install dependencies
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
